@@ -11,7 +11,7 @@
 
 
 # Specify the path to boost source code dir 
-BOOST_SRC_DIR=/home/declan/Documents/zone/low/Boost-for-Android/src
+BOOST_SRC_DIR=$1
 
 #------------------------------------------------------------------------------------------
 # Specify the version of boost youre building
@@ -21,7 +21,7 @@ BOOST_VERSION=1.67.0
 #------------------------------------------------------------------------------------------
 # Specify path to the (Google) Ndk  (by default  downloded to "..sdk/ndk-bundle" by android studio)
 #ANDROID_NDK_ROOT=/home/declan/Documents/zone/mid/lib/android/ndk/15c/android-ndk-r15c
-export ANDROID_NDK_ROOT=/home/declan/Documents/zone/mid/lib/android/sdk/ndk-bundle
+export ANDROID_NDK_ROOT=$2
 
 #------------------------------------------------------------------------------------------
 # Modify if desired
