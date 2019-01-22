@@ -689,7 +689,9 @@ EOF
         --layout=system \
         --prefix=$PREFIX \
         --build-dir=$BUILDDIR/build \
-        $WITHOUT \
+	--with-locale --with-thread --with-system --with-filesystem \
+	-sICONV_PATH=$ABS_PATH_THIS_SCRIPT/../libiconv-libicu-android/$ABI \
+        -sICU_PATH=$ABS_PATH_THIS_SCRIPT/../libiconv-libicu-android/$ABI \
         install \
 
     fail_panic "Couldn't build Boost $BOOST_VERSION $ABI libraries"

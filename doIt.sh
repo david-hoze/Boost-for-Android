@@ -52,7 +52,16 @@ ABIS="armeabi-v7a,arm64-v8a,x86,x86_64"
 LINKAGE="shared"               
 #LINKAGE="shared, static"
 
-
+# Building ICU
+cd libiconv-libicu-android
+if [ ! -d x86 -o ! -d x86_64 -o ! -d arm64-v8a -o ! -d armeabi-v7a ]
+then
+    echo One of the buiild output dirsog ICU and iconv is missing, building:
+    ./build.sh
+else
+    echo ICU and iconv already build
+fi
+cd ..
 
 #--------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------

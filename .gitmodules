@@ -1,0 +1,3 @@
+[submodule "libiconv-libicu-android"]
+	path = libiconv-libicu-android
+	url = https://github.com/david-hoze/libiconv-libicu-android.git
