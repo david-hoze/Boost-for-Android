@@ -4,9 +4,11 @@ Build and/or simply download the Boost C++ Libraries for the Android platform, w
 The [Boost C++ Libraries](http://www.boost.org/), are possibly *the* most popular and generally useful c++ libraries. It would be nice to be able to use them when developing (native c++ or hybrid java/c++ with Google's [Ndk](https://developer.android.com/ndk/)) apps and/or libraries for Android devices.
 The Boost libraries are written to be cross platform, and are available in source code format. However, building the libraries for a given target platform is not a very simple or cross platform experience, at least in practice. Building the Boost libraries for Android can be very difficult and time consuming. This project aims to lower the barrier by offering a simple customizable build script you can use to build Boost for Android (abstracting away all the details of the underlying custom boost build system), and even providing standard prebuilt binaries to get you started fast.
 
-Tested with **Boost 1.68.0** and **Google's Ndk 18b**  (current versions as of Oct 2018).
+Tested with **Boost 1.69.0** and **Google's Ndk 19**  (current versions as of Jan 2019).
 
+Building on a Linux machine is officially supported. Mac and Windows should work fine too but the details of setting up the relevant environments (eg. Cygwin or Homebrew) is beyond the scope of what this project tries to do.
 
+If you want to use an operating system other than Linux when building, the easiest option is to use virtual machines. On your OS of choice install VirtualBox, and with it create a Linux virtual machine with where you do the building. No matter what OS you use to build with, the resulting binaries can then be copied to any other, and used from then on as if you had built on there to start with (theyre cross compiled *for* android and have no memory of *where* they were built).
 
 Works with **clang** (llvm) 
 *- as of ndk 16 google no longer supports gcc*.
@@ -17,20 +19,21 @@ Creates binaries for multiple abis (**armeabi-v7a**, **arm64-v8a**, **x86**, **x
 *Tested with a development machine running OpenSuse Tumbleweed Linux.*
 
 ## Prebuilt
-You can just download a current set of standard (shared, clang/llvm) prebuilt binaries [here](http://silverglint.com/boost-for-android/) (or from an older release [here](https://github.com/dec1/Boost-for-Android/releases)) if you don't need to customize the build, or don't have access to a unix-like development machine. 
+You can just download a current set of standard prebuilt binaries [here](https://github.com/dec1/Boost-for-Android/releases) if you don't need to customize the build, or don't have access to a unix-like development machine. 
+<!--- [here](http://silverglint.com/boost-for-android/) --->
 
 ## Build Yourself
 * Download the [boost source](https://www.boost.org) and extract to a directory of the form *..../major.minor.patch* 
-  eg */home/declan/Documents/zone/mid/lib/boost/1.68.0*
+  eg */home/declan/Documents/zone/mid/lib/boost/1.69.0*
   
-  *__Note__:* After the extarction *..../boost/1.68.0* should then be the direct parent dir of "bootstrap.sh", "boost-build.jam" etc
+  *__Note__:* After the extarction *..../boost/1.69.0* should then be the direct parent dir of "bootstrap.sh", "boost-build.jam" etc
 
 
 ```
-> ls /home/declan/Documents/zone/mid/lib/boost/1.68.0
+> ls /home/declan/Documents/zone/mid/lib/boost/1.69.0
 boost  boost-build.jam  boostcpp.jam  boost.css  boost.png  ....
 ``` 
-  *__Note__:* If you are using ndk 18 you may have to modify the boost source code according to [this](https://github.com/boostorg/asio/pull/91). Currently Boost (1.68.0) doesn't support clang 7 which is the default compiler with ndk 18. This workaround should solve the problem until boost adds support for clang 7.
+  *__Note__:* If you are using ndk 18 and boost <= 1.69.0, you may have to modify the boost source code according to [this](https://github.com/boostorg/asio/pull/91). Boost (<= 1.68.0) doesn't support clang 7 which is the default compiler with ndk 18. This workaround should solve the problem until boost adds support for clang 7, which it seems to have done in 1.69.0.
 
 * Clone this repo:
 
@@ -70,9 +73,13 @@ want to use these. To see which of the libraries do require building you can swi
 > ./bootstrap.sh --show-libraries 
 ```
 
-which for example with boost 1.68 produces the output:
+which for example with boost 1.69 produces the output:
 
 ```
+The following Boost libraries have portions that require a separate build
+and installation step. Any library not listed here can be used by including
+the headers only.
+
 The Boost libraries requiring separate building and installation are:
     - atomic
     - chrono
@@ -96,7 +103,6 @@ The Boost libraries requiring separate building and installation are:
     - random
     - regex
     - serialization
-    - signals
     - stacktrace
     - system
     - test
