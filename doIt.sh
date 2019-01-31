@@ -17,6 +17,7 @@ BOOST_SRC_DIR=$1
 # Specify the version of boost youre building
 #BOOST_VERSION=1.64.0
 BOOST_VERSION=1.68.0
+ICU_VERSION=62.1
 
 #------------------------------------------------------------------------------------------
 # Specify path to the (Google) Ndk  (by default  downloded to "..sdk/ndk-bundle" by android studio)
@@ -56,20 +57,26 @@ LINKAGE="shared"
 cd libiconv-libicu-android
 if [ ! -d x86 -o ! -d x86_64 -o ! -d arm64-v8a -o ! -d armeabi-v7a ]
 then
-    echo One of the buiild output dirsog ICU and iconv is missing, building:
+    echo One of the build output dirs of ICU and iconv is missing, building:
+    export SHARED_ICU=1
+    export ARCHS=armeabi-v7a
     ./build.sh
+    cd ..
+    mkdir icu
+    mkdir icu/$ICU_VERSION
+    cp -r libiconv-libicu-android/armeabi-v7a/include icu/$ICU_VERSION/.
+    cp -r libiconv-libicu-android/armeabi-v7a/lib icu/$ICU_VERSION/.
+    mv icu/$ICU_VERSION/lib icu/$ICU_VERSION/libs
 else
     echo ICU and iconv already build
+    cd ..
 fi
-cd ..
+
 
 #--------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------
 # Dont modify  - the actual call
 #-------------------------------
 
-./build_tools/build-boost.sh --version=$BOOST_VERSION --stdlibs=$STD_LIBS --abis=$ABIS  --ndk-dir=$ANDROID_NDK_ROOT --linkage=$LINKAGE --verbose $BOOST_SRC_DIR  2>&1 | tee -a $logFile
-
-
-
-
+export ICU_DIR=`pwd`/icu
+./build_tools/build-boost.sh --version=$BOOST_VERSION --stdlibs=$STD_LIBS --abis=$ABIS  --ndk-dir=$ANDROID_NDK_ROOT --linkage=$LINKAGE --with-icu=$ICU_VERSION --verbose $BOOST_SRC_DIR  2>&1 | tee -a $logFile
