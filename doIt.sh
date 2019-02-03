@@ -51,24 +51,36 @@ ABIS="armeabi-v7a,arm64-v8a,x86,x86_64"
 # possible values:   {shared, static}
 #LINKAGE="shared"               
 LINKAGE="shared,static"
+
 # Building ICU
-cd libiconv-libicu-android
-if [ ! -d x86 -o ! -d x86_64 -o ! -d arm64-v8a -o ! -d armeabi-v7a ]
-then
-    echo One of the build output dirs of ICU and iconv is missing, building:
-    export SHARED_ICU=1
-    export ARCHS=armeabi-v7a
-    ./build.sh
-    cd ..
-    mkdir icu
-    mkdir icu/$ICU_VERSION
-    cp -r libiconv-libicu-android/armeabi-v7a/include icu/$ICU_VERSION/.
-    cp -r libiconv-libicu-android/armeabi-v7a/lib icu/$ICU_VERSION/.
-    mv icu/$ICU_VERSION/lib icu/$ICU_VERSION/libs
-else
-    echo ICU and iconv already build
-    cd ..
-fi
+echo current directory: `pwd`
+declare -a archsarr=("armeabi-v7a" "arm64-v8a" "x86" "x86_64")
+for arch in "${archsarr[@]}"
+do
+    echo Handling ICU for $arch
+    if [ ! -d icu/$ICU_VERSION/libs/$arch ]
+    then
+	if [ ! -d libiconv-libicu-android/$arch ]
+	then
+	    cd libiconv-libicu-android
+	    echo $arch output dir of ICU and iconv is missing, building:
+	    export SHARED_ICU=1
+	    export ARCHS=$arch
+	    ./build.sh
+	    cd ..
+	else
+	    echo ICU and iconv already built for $arch
+	fi
+	
+	rm -rf icu/$ICU_VERSION/libs/$arch
+	mkdir -p icu/$ICU_VERSION/libs/$arch
+	cp -r libiconv-libicu-android/armeabi-v7a/include icu/$ICU_VERSION/.
+	cp -r libiconv-libicu-android/armeabi-v7a/lib/. icu/$ICU_VERSION/libs/$arch
+    else
+	echo ICU and iconv present for $arch
+    fi
+done
+
 
 
 #--------------------------------------------------------------------------------------
