@@ -690,7 +690,7 @@ EOF
         --layout=system \
         --prefix=$PREFIX \
         --build-dir=$BUILDDIR/build \
-	--with-locale --with-thread --with-system --with-filesystem \
+	--with-locale --with-thread --with-system --with-filesystem --with-iostreams \
 	-sICONV_PATH=$ABS_PATH_THIS_SCRIPT/../libiconv-libicu-android/$ABI \
         -sICU_PATH=$ABS_PATH_THIS_SCRIPT/../libiconv-libicu-android/$ABI \
         install \
