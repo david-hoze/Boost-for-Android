@@ -74,8 +74,8 @@ do
 	
 	rm -rf icu/$ICU_VERSION/libs/$arch
 	mkdir -p icu/$ICU_VERSION/libs/$arch
-	cp -r libiconv-libicu-android/armeabi-v7a/include icu/$ICU_VERSION/.
-	cp -r libiconv-libicu-android/armeabi-v7a/lib/. icu/$ICU_VERSION/libs/$arch
+	cp -r libiconv-libicu-android/$arch/include icu/$ICU_VERSION/.
+	cp -r libiconv-libicu-android/$arch/lib/. icu/$ICU_VERSION/libs/$arch
     else
 	echo ICU and iconv present for $arch
     fi
