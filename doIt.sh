@@ -52,41 +52,9 @@ ABIS="armeabi-v7a,arm64-v8a,x86,x86_64"
 #LINKAGE="shared"               
 LINKAGE="shared,static"
 
-# Building ICU
-echo current directory: `pwd`
-declare -a archsarr=("armeabi-v7a" "arm64-v8a" "x86" "x86_64")
-for arch in "${archsarr[@]}"
-do
-    echo Handling ICU for $arch
-    if [ ! -d icu/$ICU_VERSION/libs/$arch ]
-    then
-	if [ ! -d libiconv-libicu-android/$arch ]
-	then
-	    cd libiconv-libicu-android
-	    echo $arch output dir of ICU and iconv is missing, building:
-	    export SHARED_ICU=1
-	    export ARCHS=$arch
-	    ./build.sh
-	    cd ..
-	else
-	    echo ICU and iconv already built for $arch
-	fi
-	
-	rm -rf icu/$ICU_VERSION/libs/$arch
-	mkdir -p icu/$ICU_VERSION/libs/$arch
-	cp -r libiconv-libicu-android/$arch/include icu/$ICU_VERSION/.
-	cp -r libiconv-libicu-android/$arch/lib/. icu/$ICU_VERSION/libs/$arch
-    else
-	echo ICU and iconv present for $arch
-    fi
-done
-
-
-
 #--------------------------------------------------------------------------------------
 #--------------------------------------------------------------------------------------
 # Dont modify  - the actual call
 #-------------------------------
 
-export ICU_DIR=`pwd`/icu
-./build_tools/build-boost.sh --version=$BOOST_VERSION --stdlibs=$STD_LIBS --abis=$ABIS  --ndk-dir=$ANDROID_NDK_ROOT --linkage=$LINKAGE --with-icu=$ICU_VERSION --verbose $BOOST_SRC_DIR  2>&1 | tee -a $logFile
+./build_tools/build-boost.sh --version=$BOOST_VERSION --stdlibs=$STD_LIBS --abis=$ABIS  --ndk-dir=$ANDROID_NDK_ROOT --linkage=$LINKAGE --verbose $BOOST_SRC_DIR  2>&1 | tee -a $logFile
